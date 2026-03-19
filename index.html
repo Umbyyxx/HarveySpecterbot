@@ -3,145 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negozio Mini App</title>
-    
+    <title>Harvey Shop</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
     <style>
+        :root {
+            --primary: #0088cc;
+            --bg: var(--tg-theme-bg-color, #ffffff);
+            --text: var(--tg-theme-text-color, #000000);
+            --sec-bg: var(--tg-theme-secondary-bg-color, #f5f5f5);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Gestione Schermate */
+        .page {
+            display: none; /* Nasconde le pagine di default */
             padding: 20px;
-            text-align: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        h1 { font-size: 26px; margin-bottom: 10px; }
+        .active { display: block; } /* Mostra la pagina attiva */
 
-        /* Stile Titolo Sezioni */
-        .category-title {
-            text-align: left;
-            font-size: 18px;
-            margin: 30px 0 15px 5px;
-            color: var(--tg-theme-button-color, #0088cc);
-            border-left: 4px solid var(--tg-theme-button-color, #0088cc);
-            padding-left: 10px;
-            text-transform: uppercase;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Homepage */
+        .hero-img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: #31b545;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 14px;
             font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        .card {
-            background-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
-            border-radius: 15px;
+        /* Bottoni */
+        .main-button {
+            width: 100%;
             padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .card img {
-            width: 100%;
-            height: 150px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .price {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #31b545;
-            margin: 10px 0;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #0088cc;
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 16px;
-            text-transform: uppercase;
+            margin-top: 20px;
         }
 
-        button:active {
-            transform: scale(0.98);
+        .back-button {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding: 8px 15px;
+            border-radius: 8px;
         }
+
+        /* Griglia Account */
+        .account-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .account-card {
+            background: var(--sec-bg);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .account-card:active { transform: scale(0.95); }
+
+        .account-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        h1 { margin: 10px 0; font-size: 24px; }
+        p { opacity: 0.8; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-    <h1>I Nostri Prodotti</h1>
-    
-    <div id="product-list"></div>
+    <div id="home-page" class="page active">
+        <img src="https://i.pinimg.com/736x/81/98/c5/8198c5c224e095d6014a01b6e50f2390.jpg" class="hero-img" alt="Harvey Specter">
+        <div class="badge">ECCELLENZA ITALIANA</div>
+        <h1>Miglior Shop di Telegram Italia</h1>
+        <p>Affidabilità e qualità garantita.<br><b>Accetto Escrow</b> per la tua massima sicurezza.</p>
+        
+        <button class="main-button" onclick="showPage('accounts-page')">VAI AGLI ACCOUNT</button>
+    </div>
+
+    <div id="accounts-page" class="page">
+        <button class="back-button" onclick="showPage('home-page')">← Torna Home</button>
+        <h1>Scegli il servizio</h1>
+        <p>Seleziona l'account che desideri acquistare:</p>
+
+        <div class="account-grid">
+            <div class="account-card" onclick="contatta('Spotify')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" alt="Spotify">
+                <h3>Spotify</h3>
+            </div>
+
+            <div class="account-card" onclick="contatta('Netflix')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png?_=20220806170125" alt="Netflix">
+                <h3>Netflix</h3>
+            </div>
+        </div>
+    </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        const mioUsername = "Umbyy0"; 
+        const mioUsername = "Umbyy0";
 
-        // Lista prodotti con aggiunta della categoria
-        const products = [
-            { id: 1, name: "Spotify - 1 mese", price: "4.00€", category: "Streaming", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
-            { id: 2, name: "Netflix - 4K Premium", price: "10.00€", category: "Streaming", img: "https://images.ctfassets.net/4cd45et68cgf/4nCewM6LqCwbDzdLAsuzpY/17007c51303bda4759b405ba06cc9bc0/Netflix-Brand-Logo.png?w=400" },
+        // Funzione per cambiare pagina
+        function showPage(pageId) {
+            tg.HapticFeedback.impactOccurred('light');
             
-            { id: 3, name: "Burger Deluxe", price: "12.50€", category: "Food", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
-            { id: 4, name: "Sushi Set", price: "18.00€", category: "Food", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
-        ];
+            // Nascondi tutte le pagine
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
 
-        const container = document.getElementById('product-list');
+            // Mostra quella selezionata
+            document.getElementById(pageId).classList.add('active');
+            
+            // Se siamo nella pagina account, mostriamo il tasto Back nativo di Telegram
+            if (pageId === 'accounts-page') {
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => showPage('home-page'));
+            } else {
+                tg.BackButton.hide();
+            }
+        }
 
-        // Funzione per generare la lista divisa per sezioni
-        function renderProducts() {
-            // 1. Troviamo tutte le categorie uniche presenti nella lista
-            const categories = [...new Set(products.map(p => p.category))];
-
-            // 2. Per ogni categoria creiamo una sezione
-            categories.forEach(cat => {
-                // Aggiungiamo il titolo della sezione
-                container.innerHTML += `<div class="category-title">${cat}</div>`;
-                
-                // Creiamo un mini-container per le card di questa categoria
-                const sectionGrid = document.createElement('div');
-                sectionGrid.className = 'container';
-                
-                // Filtriamo i prodotti appartenenti alla categoria
-                const filtered = products.filter(p => p.category === cat);
-                
-                filtered.forEach(p => {
-                    sectionGrid.innerHTML += `
-                        <div class="card">
-                            <img src="${p.img}" alt="${p.name}">
-                            <h3>${p.name}</h3>
-                            <p class="price">${p.price}</p>
-                            <button onclick="contatta('${p.name}')">Contatta</button>
-                        </div>
-                    `;
-                });
-                
-                container.appendChild(sectionGrid);
+        function contatta(servizio) {
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showConfirm(`Vuoi contattarmi per acquistare un account ${servizio}?`, (confirmed) => {
+                if (confirmed) {
+                    tg.openTelegramLink(`https://t.me/${mioUsername}`);
+                }
             });
         }
-
-        function contatta(nomeProdotto) {
-            tg.HapticFeedback.impactOccurred('medium');
-            // Formattiamo il messaggio per essere pronti a scriverlo nella chat
-            const url = `https://t.me/${mioUsername}`;
-            tg.openTelegramLink(url);
-        }
-
-        // Avviamo la creazione della lista
-        renderProducts();
     </script>
 </body>
 </html>
