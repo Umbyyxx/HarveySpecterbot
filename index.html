@@ -48,16 +48,17 @@
             margin: 10px 0;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--tg-theme-button-color, #248bcf);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
+        button     {
+        width: 100%;
+        padding: 12px;
+        background-color: #0088cc; /* Colore azzurro Telegram */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+        text-transform: uppercase;
         }
 
         button:active {
@@ -74,38 +75,41 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand(); // Fa aprire l'app a tutto schermo subito
+tg.ready();
+tg.expand();
 
-        // Database finto dei prodotti
-        const products = [
-            { id: 1, name: "Account Spotify - 1 mese", price: "4.00€", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
-            { id: 2, name: "Burger Deluxe", price: "12.50€", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
-            { id: 3, name: "Sushi Set", price: "18.00€", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
-        ];
+// Sostituisci "TUO_USERNAME" con il tuo vero username di Telegram senza la @
+const mioUsername = "TUO_USERNAME"; 
 
-        const container = document.getElementById('product-list');
+const products = [
+    { id: 1, name: "Account Spotify - 1 mese", price: "4.00€", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
+    { id: 2, name: "Burger Deluxe", price: "12.50€", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
+    { id: 3, name: "Sushi Set", price: "18.00€", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
+];
 
-        // Generazione dinamica della lista
-        products.forEach(p => {
-            container.innerHTML += `
-                <div class="card">
-                    <img src="${p.img}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <p class="price">${p.price}</p>
-                    <button onclick="order(${p.id})">Ordina Ora</button>
-                </div>
-            `;
-        });
+const container = document.getElementById('product-list');
 
-        function order(id) {
-            const product = products.find(p => p.id === id);
-            // Feedback nativo di Telegram
-            tg.HapticFeedback.impactOccurred('medium'); 
-            tg.showConfirm(`Vuoi davvero ordinare ${product.name}?`, (confirmed) => {
-                if (confirmed) {
-                    tg.showAlert("Ordine ricevuto! Ti contatteremo a breve.");
-                }
+products.forEach(p => {
+    container.innerHTML += `
+        <div class="card">
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p class="price">${p.price}</p>
+            <button onclick="contatta('${p.name}')">Contatta</button>
+        </div>
+    `;
+});
+
+function contatta(nomeProdotto) {
+    tg.HapticFeedback.impactOccurred('medium');
+    
+    // Creiamo il link al tuo profilo. 
+    // Opzionale: puoi aggiungere un messaggio preimpostato se il link lo supporta, 
+    // ma il redirect base è t.me/username
+    const url = `https://t.me/Umbyy0`;
+    
+    tg.openTelegramLink(url);
+}
             });
         }
     </script>
