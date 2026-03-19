@@ -11,167 +11,179 @@
             --bg: var(--tg-theme-bg-color, #ffffff);
             --text: var(--tg-theme-text-color, #000000);
             --sec-bg: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            --hint: var(--tg-theme-hint-color, #999999);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+            margin: 0; padding: 0;
+            text-align: center;
         }
 
-        /* Gestione Schermate */
-        .page {
-            display: none; /* Nasconde le pagine di default */
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .active { display: block; }
 
-        .active { display: block; } /* Mostra la pagina attiva */
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Homepage */
-        .hero-img {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
+        .hero-img { width: 100%; max-width: 300px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        .main-button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
 
-        .badge {
-            background: #31b545;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
+        /* Griglia Categorie */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .card { background: var(--sec-bg); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); }
+        .card img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 10px; }
 
-        /* Bottoni */
-        .main-button {
-            width: 100%;
+        /* Lista Prodotti */
+        .product-item { background: var(--sec-bg); margin-bottom: 12px; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+        .product-info { flex: 1; margin-right: 10px; }
+        .product-name { font-weight: bold; font-size: 14px; display: block; }
+        .product-price { color: #31b545; font-weight: bold; margin-top: 3px; display: block; }
+        .buy-btn { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 13px; }
+
+        .back-nav { color: var(--primary); cursor: pointer; margin-bottom: 20px; display: inline-block; font-weight: bold; }
+
+        /* Disclaimer */
+        .disclaimer {
+            margin-top: 30px;
             padding: 15px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
+            font-size: 11px;
+            color: var(--hint);
+            line-height: 1.4;
+            text-align: justify;
+            border-top: 1px solid var(--sec-bg);
         }
-
-        .back-button {
-            background: none;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            margin-bottom: 20px;
-            padding: 8px 15px;
-            border-radius: 8px;
-        }
-
-        /* Griglia Account */
-        .account-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .account-card {
-            background: var(--sec-bg);
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            transition: 0.2s;
-        }
-
-        .account-card:active { transform: scale(0.95); }
-
-        .account-card img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            margin-bottom: 10px;
-        }
-
-        h1 { margin: 10px 0; font-size: 24px; }
-        p { opacity: 0.8; line-height: 1.5; }
     </style>
 </head>
 <body>
 
     <div id="home-page" class="page active">
-        <img src="https://i.pinimg.com/736x/81/98/c5/8198c5c224e095d6014a01b6e50f2390.jpg" class="hero-img" alt="Harvey Specter">
-        <div class="badge">ECCELLENZA ITALIANA</div>
+        <img src="https://i.pinimg.com/736x/81/98/c5/8198c5c224e095d6014a01b6e50f2390.jpg" class="hero-img">
         <h1>Miglior Shop di Telegram Italia</h1>
-        <p>Affidabilità e qualità garantita.<br><b>Accetto Escrow</b> per la tua massima sicurezza.</p>
-        
-        <button class="main-button" onclick="showPage('accounts-page')">VAI AGLI ACCOUNT</button>
+        <p><b>Accetto Escrow</b> per la tua sicurezza.</p>
+        <button class="main-button" onclick="showPage('menu-page')">ENTRA NELLO SHOP</button>
     </div>
 
-    <div id="accounts-page" class="page">
-        <button class="back-button" onclick="showPage('home-page')">← Torna Home</button>
-        <h1>Scegli il servizio</h1>
-        <p>Seleziona l'account che desideri acquistare:</p>
-
-        <div class="account-grid">
-            <div class="account-card" onclick="contatta('Spotify')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" alt="Spotify">
-                <h3>Spotify</h3>
+    <div id="menu-page" class="page">
+        <div class="back-nav" onclick="showPage('home-page')">← Home</div>
+        <h2>Categorie</h2>
+        <div class="grid">
+            <div class="card" onclick="openCategory('Spotify')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png">
+                <div>Spotify</div>
             </div>
-
-            <div class="account-card" onclick="contatta('Netflix')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png?_=20220806170125" alt="Netflix">
-                <h3>Netflix</h3>
+            <div class="card" onclick="openCategory('Netflix')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png?_=20220806170125">
+                <div>Netflix</div>
             </div>
+            <div class="card" onclick="openCategory('Fortnite')">
+                <img src="https://cdn2.steamgriddb.com/icon/9425be43ba92c2b4454ca7bf602efad8.png">
+                <div>Fortnite</div>
+            </div>
+            <div class="card" onclick="openCategory('Roblox')">
+                <img src="https://www.rw-designer.com/icon-image/21521-256x256x32.png">
+                <div>Roblox</div>
+            </div>
+            <div class="card" onclick="openCategory('GTA V')">
+                <img src="https://img.utdstc.com/screen/f68/395/f68395b8f643936ca2c471e24bd4660f703f5c42edf9ea2f007f7816eccba79f:600">
+                <div>GTA V</div>
+            </div>
+            <div class="card" onclick="openCategory('Altro')">
+                <img src="https://cdn-icons-png.flaticon.com/512/570/570223.png">
+                <div>Altro</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="products-page" class="page">
+        <div class="back-nav" onclick="showPage('menu-page')">← Categorie</div>
+        <h2 id="cat-title">Prodotti</h2>
+        <div id="list-container"></div>
+        
+        <div class="disclaimer">
+            <b>Nota bene:</b> non mi assumo nessuna responsabilità di cosa potrebbe accadere agli account successivamente dopo aver effettuato un ordine, i miei metodi sono molto sicuri provati da me senza alcune conseguenze e ripercussioni ma non escludo la possibilità che gli account in questione potrebbero essere bannati o altro. Acquistate solo a vostro rischio e pericolo dopo aver letto.
         </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-
+        tg.ready(); tg.expand();
         const mioUsername = "Umbyy0";
 
-        // Funzione per cambiare pagina
-        function showPage(pageId) {
-            tg.HapticFeedback.impactOccurred('light');
-            
-            // Nascondi tutte le pagine
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+        const database = {
+            "Spotify": [
+                { n: "Nuovo Account - 1 mese", p: "4.00€" },
+                { n: "Nuovo Account - 3 mesi", p: "10.00€" },
+                { n: "Premium al tuo account - 1 mese", p: "5.00€" },
+                { n: "Premium al tuo account - 3 mesi", p: "12.00€" },
+                { n: "Premium al tuo account - 6 mesi", p: "18.00€" },
+                { n: "Premium al tuo account - 12 mesi", p: "30.00€" }
+            ],
+            "Netflix": [
+                { n: "Account Netflix 4k UHD - 1 mese", p: "6.00€" },
+                { n: "Account Netflix 4k UHD - 3 mesi", p: "14.00€" }
+            ],
+            "Fortnite": [
+                { n: "Account 5+ skin random", p: "3.00€" },
+                { n: "Fortnite Crew Member (Metodo Link Xbox)", p: "7.00€" },
+                { n: "800 vbucks (Metodo Link Xbox)", p: "7.00€" },
+                { n: "2400 vbucks (Metodo Link Xbox)", p: "15.00€" },
+                { n: "4500 vbucks (Metodo Cambio paese)", p: "25.00€" },
+                { n: "9000 vbucks (Metodo Cambio paese)", p: "45.00€" },
+                { n: "12500 vbucks (Metodo Cambio paese)", p: "60.00€" }
+            ],
+            "Roblox": [
+                { n: "Robux (Info in privato)", p: "da 6.00€" },
+                { n: "Vari account e item", p: "Variabile" }
+            ],
+            "GTA V": [
+                { n: "Account GTA V (Contattare)", p: "Variabile" }
+            ],
+            "Altro": [
+                { n: "Altri account o richieste personalizzate", p: "Contattami" }
+            ]
+        };
 
-            // Mostra quella selezionata
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
-            // Se siamo nella pagina account, mostriamo il tasto Back nativo di Telegram
-            if (pageId === 'accounts-page') {
-                tg.BackButton.show();
-                tg.BackButton.onClick(() => showPage('home-page'));
-            } else {
+            // Gestione tasto Back di Telegram
+            if(pageId === 'home-page') {
                 tg.BackButton.hide();
+            } else {
+                tg.BackButton.show();
+                tg.BackButton.offClick(); // Pulisce i vecchi click
+                tg.BackButton.onClick(() => {
+                    if(pageId === 'products-page') showPage('menu-page');
+                    else showPage('home-page');
+                });
             }
         }
 
-        function contatta(servizio) {
-            tg.HapticFeedback.notificationOccurred('success');
-            tg.showConfirm(`Vuoi contattarmi per acquistare un account ${servizio}?`, (confirmed) => {
-                if (confirmed) {
-                    tg.openTelegramLink(`https://t.me/${mioUsername}`);
-                }
+        function openCategory(cat) {
+            document.getElementById('cat-title').innerText = cat;
+            const container = document.getElementById('list-container');
+            container.innerHTML = "";
+            
+            database[cat].forEach(item => {
+                container.innerHTML += `
+                    <div class="product-item">
+                        <div class="product-info">
+                            <span class="product-name">${item.n}</span>
+                            <span class="product-price">${item.p}</span>
+                        </div>
+                        <button class="buy-btn" onclick="contatta('${item.n}')">Acquista</button>
+                    </div>`;
             });
+            showPage('products-page');
+        }
+
+        function contatta(prod) {
+            tg.HapticFeedback.notificationOccurred('warning');
+            tg.openTelegramLink(`https://t.me/${mioUsername}`);
         }
     </script>
 </body>
