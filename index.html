@@ -1,33 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negozio Mini App</title>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        /* Qui dentro mettiamo l'aspetto estetico */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 { font-size: 24px; margin-bottom: 20px; }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr; /* Una colonna per mobile */
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #31b545; /* Verde per il prezzo */
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--tg-theme-button-color, #248bcf);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
 <body>
+
     <h1>I Nostri Prodotti</h1>
+    
     <div id="product-list" class="container">
         </div>
 
     <script>
-        // Dati di esempio (puoi aggiungerne quanti ne vuoi)
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // Fa aprire l'app a tutto schermo subito
+
+        // Database finto dei prodotti
         const products = [
-            { id: 1, name: "Account Spotify 1 mese", price: "4€", img: "https://it.wikipedia.org/wiki/File:Spotify_icon.png" },
-            { id: 2, name: "Prodotto Silver", price: "5.00€", img: "https://picsum.photos/200/150?random=2" },
-            { id: 3, name: "Prodotto Bronze", price: "2.50€", img: "https://picsum.photos/200/150?random=3" }
+            { id: 1, name: "Account Spotify - 1 mese", price: "4.00€", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
+            { id: 2, name: "Burger Deluxe", price: "12.50€", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
+            { id: 3, name: "Sushi Set", price: "18.00€", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
         ];
 
         const container = document.getElementById('product-list');
 
-        // Ciclo per creare il codice HTML di ogni prodotto
+        // Generazione dinamica della lista
         products.forEach(p => {
             container.innerHTML += `
                 <div class="card">
                     <img src="${p.img}" alt="${p.name}">
                     <h3>${p.name}</h3>
                     <p class="price">${p.price}</p>
-                    <button onclick="buy(${p.id})">Acquista</button>
+                    <button onclick="order(${p.id})">Ordina Ora</button>
                 </div>
             `;
         });
 
-        function buy(id) {
-            const p = products.find(item => item.id === id);
-            tg.showAlert(`Hai scelto: ${p.name}`);
+        function order(id) {
+            const product = products.find(p => p.id === id);
+            // Feedback nativo di Telegram
+            tg.HapticFeedback.impactOccurred('medium'); 
+            tg.showConfirm(`Vuoi davvero ordinare ${product.name}?`, (confirmed) => {
+                if (confirmed) {
+                    tg.showAlert("Ordine ricevuto! Ti contatteremo a breve.");
+                }
+            });
         }
     </script>
 </body>
+</html>
