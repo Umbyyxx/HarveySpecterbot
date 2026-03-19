@@ -17,7 +17,19 @@
             text-align: center;
         }
 
-        h1 { font-size: 24px; margin-bottom: 20px; }
+        h1 { font-size: 26px; margin-bottom: 10px; }
+
+        /* Stile Titolo Sezioni */
+        .category-title {
+            text-align: left;
+            font-size: 18px;
+            margin: 30px 0 15px 5px;
+            color: var(--tg-theme-button-color, #0088cc);
+            border-left: 4px solid var(--tg-theme-button-color, #0088cc);
+            padding-left: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
 
         .container {
             display: grid;
@@ -29,7 +41,8 @@
             background-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
             border-radius: 15px;
             padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .card img {
@@ -68,40 +81,67 @@
 
     <h1>I Nostri Prodotti</h1>
     
-    <div id="product-list" class="container"></div>
+    <div id="product-list"></div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // Ho inserito il tuo username direttamente qui
         const mioUsername = "Umbyy0"; 
 
+        // Lista prodotti con aggiunta della categoria
         const products = [
-            { id: 1, name: "Account Spotify - 1 mese", price: "4.00€", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
-            { id: 2, name: "Burger Deluxe", price: "12.50€", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
-            { id: 3, name: "Sushi Set", price: "18.00€", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
+            { id: 1, name: "Spotify - 1 mese", price: "4.00€", category: "Streaming", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Spotify_icon.png" },
+            { id: 2, name: "Netflix - 4K Premium", price: "10.00€", category: "Streaming", img: "https://images.ctfassets.net/4cd45et68cgf/4nCewM6LqCwbDzdLAsuzpY/17007c51303bda4759b405ba06cc9bc0/Netflix-Brand-Logo.png?w=400" },
+            
+            { id: 3, name: "Burger Deluxe", price: "12.50€", category: "Food", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" },
+            { id: 4, name: "Sushi Set", price: "18.00€", category: "Food", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" }
         ];
 
         const container = document.getElementById('product-list');
 
-        products.forEach(p => {
-            container.innerHTML += `
-                <div class="card">
-                    <img src="${p.img}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <p class="price">${p.price}</p>
-                    <button onclick="contatta('${p.name}')">Contatta</button>
-                </div>
-            `;
-        });
+        // Funzione per generare la lista divisa per sezioni
+        function renderProducts() {
+            // 1. Troviamo tutte le categorie uniche presenti nella lista
+            const categories = [...new Set(products.map(p => p.category))];
+
+            // 2. Per ogni categoria creiamo una sezione
+            categories.forEach(cat => {
+                // Aggiungiamo il titolo della sezione
+                container.innerHTML += `<div class="category-title">${cat}</div>`;
+                
+                // Creiamo un mini-container per le card di questa categoria
+                const sectionGrid = document.createElement('div');
+                sectionGrid.className = 'container';
+                
+                // Filtriamo i prodotti appartenenti alla categoria
+                const filtered = products.filter(p => p.category === cat);
+                
+                filtered.forEach(p => {
+                    sectionGrid.innerHTML += `
+                        <div class="card">
+                            <img src="${p.img}" alt="${p.name}">
+                            <h3>${p.name}</h3>
+                            <p class="price">${p.price}</p>
+                            <button onclick="contatta('${p.name}')">Contatta</button>
+                        </div>
+                    `;
+                });
+                
+                container.appendChild(sectionGrid);
+            });
+        }
 
         function contatta(nomeProdotto) {
             tg.HapticFeedback.impactOccurred('medium');
+            // Formattiamo il messaggio per essere pronti a scriverlo nella chat
             const url = `https://t.me/${mioUsername}`;
             tg.openTelegramLink(url);
         }
+
+        // Avviamo la creazione della lista
+        renderProducts();
     </script>
 </body>
 </html>
